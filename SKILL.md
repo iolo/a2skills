@@ -49,7 +49,9 @@ When the task touches CPU, memory, soft switches, or breakpoints, assume the use
 
 ## Handle Disk Images With `a2kit` Or AppleCommander
 
-Read [references/disk-images.md](references/disk-images.md) before changing Apple II disk images.
+Read [references/a2kit.md](references/a2kit.md) when the task needs scriptable disk-image inspection, conversion, or file operations.
+
+Read [references/applecommander.md](references/applecommander.md) when the task is a straightforward AppleCommander workflow.
 
 Prefer `a2kit` when:
 
@@ -81,6 +83,8 @@ Do not imply that a file extension alone fully identifies the filesystem semanti
 
 ## Write AppleSoft BASIC
 
+Read [references/applesoft.md](references/applesoft.md) when you need AppleSoft syntax, patterns, or debugging defaults.
+
 Prefer AppleSoft BASIC for small Apple II programs, demos, text UI programs, integer/float calculations, simple graphics, and disk-driven workflows where interpreted code is acceptable.
 
 Default practices:
@@ -101,7 +105,9 @@ When debugging BASIC, inspect:
 
 ## Write 6502 Assembly With `ca65`
 
-Read [references/toolchains.md](references/toolchains.md) before choosing commands.
+Read [references/6502.md](references/6502.md) when you need 6502 instruction behavior, addressing-mode reminders, or `ca65`-style patterns.
+
+Read [references/cc65.md](references/cc65.md) before choosing build commands.
 
 Default to portable, readable `ca65` assembly:
 
@@ -146,6 +152,9 @@ Prefer precise statements about slots, ROM, soft switches, keyboard behavior, vi
 Load only the reference needed for the current task:
 
 - `references/apple2ts-api.md` for emulator HTTP control
-- `references/disk-images.md` for `a2kit` and AppleCommander image workflows
-- `references/toolchains.md` for `ca65`/`cc65`/`cl65` build patterns
+- `references/a2kit.md` for scriptable disk-image workflows with `a2kit`
+- `references/applecommander.md` for straightforward disk-image workflows with AppleCommander
+- `references/applesoft.md` for AppleSoft BASIC syntax, patterns, and debugging
+- `references/6502.md` for 6502 instruction behavior, addressing modes, and `ca65` patterns
+- `references/cc65.md` for `ca65`/`cc65`/`cl65` build patterns
 - `references/hardware-and-firmware.md` for Apple II family hardware and firmware facts
