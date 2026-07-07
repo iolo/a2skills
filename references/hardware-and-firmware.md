@@ -2,6 +2,14 @@
 
 Use this reference for concise factual grounding when answering Apple II model, ROM, slot, memory, disk, and firmware questions.
 
+## Agent Navigation
+
+- Start here for model, ROM, slot, memory, video, storage, or peripheral assumptions.
+- Use `a2-peek-poke-call.md` for exact addresses, soft switches, vectors, and firmware entry points.
+- Use `6502.md` for CPU instruction behavior.
+- Use `appledos.md` or `prodos.md` when the question is about OS command behavior rather than hardware.
+- Always separate universal Apple II behavior from model-specific or card-specific behavior.
+
 ## Model distinctions
 
 ### Apple II and Apple II+

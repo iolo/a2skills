@@ -2,11 +2,13 @@
 
 Use this reference when the task needs scriptable Apple II disk-image inspection, creation, conversion, or file transfer.
 
-## Installed tool on the authoring machine
+## Agent Navigation
 
-The machine used to create this skill had `a2kit` installed at `/home/iolo/.cargo/bin/a2kit`.
-
-Do not assume it exists on every future machine. Verify first.
+- Prefer a bundled executable at `assets/a2kit` when present and executable.
+- Prefer `a2kit` for Apple II disk-image work when it is available.
+- Use `applecommander.md` only when the user specifically asks for AppleCommander/`ac`, `a2kit` is unavailable, or a conservative common DOS/ProDOS workflow is clearly simpler.
+- Use `appledos.md` or `prodos.md` for BASIC-facing DOS/ProDOS command syntax.
+- After modifying an image, recatalog it and boot or mount-test it when possible.
 
 ## Best fit
 
@@ -19,9 +21,7 @@ Prefer `a2kit` when:
 
 ## Supported image and filesystem scope
 
-According to the official README, `a2kit` emphasizes Apple II disk images, filesystems, and languages.
-
-The README lists disk image support for:
+Disk image support includes:
 
 - `2MG`
 - `D13`
@@ -34,7 +34,7 @@ The README lists disk image support for:
 - `TD0`
 - `WOZ`
 
-The README also lists Apple DOS 3.2, Apple DOS 3.3, ProDOS, CP/M, and UCSD Pascal filesystem support.
+Filesystem support includes Apple DOS 3.2, Apple DOS 3.3, ProDOS, CP/M, and UCSD Pascal.
 
 ## High-value commands
 

@@ -2,6 +2,14 @@
 
 Use this reference when the user wants to control or inspect an `apple2ts` emulator over HTTP.
 
+## Agent Navigation
+
+- Start with Operating assumptions before any HTTP call.
+- Use Core endpoints for exact paths and payload shapes.
+- Use Response shape when parsing results.
+- Use Practical guidance before debugger, memory, snapshot, or save-state operations.
+- Do not guess endpoints or ports; this file is the local API authority for the skill.
+
 Source of truth:
 
 - GitHub OpenAPI spec: `https://github.com/ct6502/apple2ts/blob/main/server/openapi.json`
@@ -10,7 +18,9 @@ Source of truth:
 ## Operating assumptions
 
 - The server is localhost-only.
+- Unless the user says otherwise, default base URL is `http://127.0.0.1:6502`.
 - The OpenAPI spec declares server URL `/`, so use the local host and port exposed by the running `apple2ts` instance.
+- If `http://127.0.0.1:6502` does not respond, do not guess other ports. Tell the user the emulator is not reachable, suggest starting the local `apple2ts` server, and ask them to specify a different port if needed.
 - Read state first when the port or current machine configuration is unknown.
 
 ## Core endpoints

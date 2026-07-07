@@ -1,0 +1,1 @@
+../../references/hardware-and-firmware.md

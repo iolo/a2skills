@@ -2,27 +2,27 @@
 
 Use this reference when the task needs straightforward Apple II disk-image listing, extraction, import, or simple image creation with AppleCommander.
 
-## Installed tools on the authoring machine
+## Agent Navigation
 
-The machine used to create this skill had:
-
-- AppleCommander CLI as `ac` at `/home/iolo/.local/bin/ac`
-- `java` at `/usr/bin/java`
-
-Do not assume both are present on every future machine. Verify first.
+- Prefer a bundled executable at `assets/ac` when present and executable.
+- Prefer `a2kit.md` for general disk-image automation.
+- Use this file when the user asks for AppleCommander/`ac`, `a2kit` is unavailable, or the task is simple image listing, extraction, import, or creation.
+- Use `appledos.md` or `prodos.md` for BASIC-facing DOS/ProDOS command syntax.
+- After modifying an image, recatalog it and boot or mount-test it when possible.
 
 ## Best fit
 
-Prefer AppleCommander when:
+Use AppleCommander when:
 
+- the user explicitly asks for AppleCommander or `ac`
+- `a2kit` is unavailable and AppleCommander is available
 - the workflow is straightforward and interactive rather than highly scripted
-- the local machine already has `ac` available
 - the task is simple listing, extraction, import, or image creation
 - conservative DOS 3.3 or ProDOS operations are enough
 
 ## High-value commands
 
-The local CLI help identified these practical operations:
+Useful commands:
 
 - `-i` image info
 - `-ls`, `-l`, `-ll` image directory listings
