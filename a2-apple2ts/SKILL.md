@@ -1,48 +1,51 @@
 ---
 name: a2-apple2ts
-description: Control, inspect, debug, or automate an apple2ts emulator over its localhost HTTP API. Use for machine state, drives, mounting media, keyboard input, reset/boot, memory/CPU/debugger operations, breakpoints, save states, screenshots, and running BASIC or binary-block programs.
+description: Control and debug Apple2TS using the configured apple2ts-server MCP, with localhost HTTP as a compatibility option. Use for private sessions, disk and binary uploads, keyboard input, screenshots, CPU and memory inspection, breakpoints, and watchpoints.
 ---
 
 # A2 Apple2TS
 
-## Overview
+Prefer the already configured `apple2ts-server` MCP. Discover actual tools and
+resources; client prefixes may differ. Do not reinstall or reconfigure the server
+as part of ordinary emulator work.
 
-Act as a careful operator of a local `apple2ts` emulator. Read the API reference before sending emulator requests and verify state before and after important mutations.
+## References
 
-## Reference
-
-Read [references/apple2ts-api.md](references/apple2ts-api.md) before sending API requests. Treat it as authoritative; do not guess endpoint names.
-
-## Defaults
-
-Unless the user explicitly requests a different host or port, use:
-
-```text
-http://127.0.0.1:6502
-```
-
-Do not probe random localhost ports. If that server does not respond, tell the user `apple2ts` is not reachable, suggest starting the local server, and ask for a different port only if their setup does not use `6502`.
+- [references/apple2ts-mcp.md](references/apple2ts-mcp.md): primary MCP workflow,
+  upload tickets, state resources, tool arguments, and failure handling.
+- [references/apple2ts-api.md](references/apple2ts-api.md): selected HTTP sessions
+  or capabilities absent from MCP. HTTP may target a different emulator.
+- [references/apple2ts-integration.md](references/apple2ts-integration.md): optional
+  scratch-session verification with observable results.
 
 ## Workflow
 
-1. Confirm the local server is reachable.
-2. Start exploratory sessions with `GET /api/machine`.
-3. Use `GET /api/drives` only when drive or media state matters.
-4. Read machine state before mutating it.
-5. Use the smallest API call that solves the problem.
-6. Re-read state after boot, reset, mount, memory writes, CPU changes, breakpoint changes, or save-state restore.
-7. Prefer save-state export or snapshots before invasive debugging when reversibility matters.
+1. Inspect MCP session lifecycle; start a private visible/headless session when
+   needed and record its identity. Preserve pre-existing sessions.
+2. Read machine/execution state and media as relevant. Pause before stable
+   CPU/memory setup and observe paused state.
+3. Use upload tickets for files, dedicated tools for controls, and bounded
+   memory reads. Check tool errors and operation receipts.
+4. Verify behavior using execution stops, memory, rendered text, or screenshots.
+   Upload completion or keyboard delivery alone does not prove execution.
+5. Release held input, remove only owned debugger entries, and stop private
+   test sessions created by the task when finished.
 
-When automating text entry, prefer `/api/input/keys` with `type: "text"` for whole strings and `type: "key"` or `type: "keyCode"` for precise keypresses.
+Choose reset, boot, and media ejection based on the program's startup needs;
+do not eject every disk for every BASIC task. MCP has no direct basic-text tool:
+use keyboard entry or a packaged BASIC disk.
 
-When mounting media, be explicit about drive ids: `fd1`, `fd2`, `hd1`, or `hd2`.
+For HTTP compatibility, default to `http://127.0.0.1:6502`. The browser needs
+remote control and debugging enabled:
+`http://127.0.0.1:6502/?remoteControl=1&debug=on`. Do not probe unrelated ports
+if unreachable. This browser requirement applies to HTTP; MCP owns its private
+browser session.
 
-To run an AppleSoft BASIC program, unmount all media to avoid boot priority, restart and reset for clean state, then mount the BASIC file.
+## Companion routing
 
-For raw assembly binaries, prefer `sourceType: "binary-block"` with a known load address and `autoRun: true` over debugger memory writes unless precision patching is required.
-
-## Companion Routing
-
-- Use `a2-basic` when the task is to write, fix, or explain the BASIC program before running it.
-- Use `a2-cc65` when build commands, load addresses, binary format, C/assembly source, or native-code debugging decisions are needed.
-- Use `a2-a2kit` when media must be inspected, created, converted, or modified before mounting.
+- `a2-basic` writes BASIC; `a2-cc65` builds native programs and defines their
+  formats/addresses; `a2-a2kit` packages disk images.
+- `a2-mame` is an independent Lua-controlled alternative or comparison target.
+  Honor explicit emulator choice; use separate sessions and media copies.
+- The local `APPLE2TS_REMOTE_CONTROL.md`, if present, is historical project
+  evidence, not a universal policy or current MCP specification.
