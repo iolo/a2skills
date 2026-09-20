@@ -1,0 +1,25 @@
+name: Validate skills and development recipes
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Build pinned cc65
+        run: |
+          git clone https://github.com/cc65/cc65.git "$RUNNER_TEMP/cc65"
+          git -C "$RUNNER_TEMP/cc65" checkout a028ac4140127cfec5f546f6cfc151f25cbaaf98
+          make -C "$RUNNER_TEMP/cc65" -j2
+          echo "$RUNNER_TEMP/cc65/bin" >> "$GITHUB_PATH"
+          echo "CC65_HOME=$RUNNER_TEMP/cc65" >> "$GITHUB_ENV"
+      - name: Install pinned a2kit
+        run: cargo install a2kit --version 4.4.2 --locked
+      - name: Check installed skill layout
+        run: python3 scripts/check.py
+      - name: Compile and round-trip disk fixtures
+        run: python3 scripts/test_workflows.py

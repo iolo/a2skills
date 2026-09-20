@@ -21,7 +21,7 @@ Load only the reference needed for the task:
 ## Workflow
 
 1. Confirm the user asked for AppleCommander/`ac`, or that `a2kit` is unavailable or a poorer fit.
-2. Use `assets/ac` when present and executable. If it is missing, use another available AppleCommander command form.
+2. Resolve an explicit executable, a compatible skill-local bundle, then `ac` on PATH (or an explicitly configured jar).
 3. Identify the image container format and likely filesystem.
 4. List or inspect the image before editing it.
 5. Extract files before destructive changes when the image is important.

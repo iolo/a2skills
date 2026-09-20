@@ -4,7 +4,7 @@ Use this reference when the task needs scriptable Apple II disk-image inspection
 
 ## Agent Navigation
 
-- Prefer a bundled executable at `assets/a2kit` when present and executable.
+- Prefer an explicit executable, then a platform-compatible skill-local bundle, then `a2kit` on PATH. Root repository assets are not installed with this skill.
 - Prefer `a2kit` for Apple II disk-image work when it is available.
 - Use `applecommander.md` only when the user specifically asks for AppleCommander/`ac`, `a2kit` is unavailable, or a conservative common DOS/ProDOS workflow is clearly simpler.
 - Use `appledos.md` or `prodos.md` for BASIC-facing DOS/ProDOS command syntax.

@@ -1,0 +1,3 @@
+[submodule "apple2ts"]
+	path = apple2ts
+	url = https://github.com/ct6502/apple2ts

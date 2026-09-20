@@ -13,6 +13,8 @@ Act as a practical Apple II disk-image operator using `a2kit`. Prefer `a2kit` fo
 
 Load only the reference needed for the task:
 
+- [references/development-recipes.md](references/development-recipes.md) for runnable source, build, disk-packaging, and emulator recipes
+
 - [references/a2kit.md](references/a2kit.md) for scriptable disk-image workflows with `a2kit`
 - [references/applecommander.md](references/applecommander.md) only when the user asks for AppleCommander, `a2kit` is unavailable, or comparing/falling back
 - [references/appledos.md](references/appledos.md) for DOS 3.3 details
@@ -20,7 +22,7 @@ Load only the reference needed for the task:
 
 ## Workflow
 
-1. Use `assets/a2kit` when present and executable. If it is missing, fall back to AppleCommander when available.
+1. Resolve an explicit tool path, a compatible skill-local bundle, then `a2kit` on PATH. Only fall back to AppleCommander if a2kit is unavailable or explicitly requested.
 2. Identify the image container format and likely filesystem.
 3. Catalog or inspect the image before editing it.
 4. Export or copy files out before destructive changes when the image is important.

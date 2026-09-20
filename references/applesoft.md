@@ -36,7 +36,7 @@ Use when writing or debugging AppleSoft BASIC for Apple II systems. Prefer plain
 
 ### Common Gotchas
 
-- `GET` reads one character and often needs a loop for empty input.
+- `GET` waits for one character; use keyboard-latch polling for nonblocking input.
 - `INPUT` and `READ` behave differently; do not substitute casually.
 - String variables end with `$`.
 - Arrays need `DIM` before use.
@@ -67,7 +67,7 @@ Check:
 - missing `DIM`
 - broken `GOSUB` / `RETURN`
 - missing `RESTORE` before re-reading `DATA`
-- `GET` loops that do not handle empty input
+- blocking `GET` where the program needs nonblocking input
 - dense `:` chains that hide branch targets
 - machine-specific assumptions
 - syntax around `IF`, separators, and function use
@@ -91,7 +91,7 @@ Check:
 
 ```basic
 10 GET A$
-20 IF A$ = "" THEN 10
+20 PRINT "KEY: ";A$
 ```
 
 ### Loop
@@ -283,7 +283,7 @@ Set display to text mode
 ```
 GR
 ```
-Set display to mixed test/low resolution ("lores") graphics mode, clear screen to black
+Set display to mixed text/low resolution ("lores") graphics mode, clear screen to black
 
 ```
 COLOR= *aexpr*
@@ -425,7 +425,8 @@ Set lower address of variable memory
 ```
 WAIT *aexpr*, *aexpr* [, *aexpr*]
 ```
-Wait until memory location masked by second argument equals third argument (or zero)
+Wait until `(PEEK(address) XOR xorMask) AND andMask` is nonzero.
+The second argument is andMask; the optional third argument is xorMask (default 0).
 
 #### Cassette Tape
 
@@ -454,12 +455,12 @@ SHLOAD
 ```
 Load hires shape table from cassette
 
-#### Compatibility Shims
+#### Native Hardware Interaction
 
 ```
 SPEED= *aexpr*
 ```
-Set character output delay — *has no effect*
+Set character output speed (0–255); 255 is fastest.
 
 ```
 POKE *aexpr*, *aexpr*
@@ -475,7 +476,7 @@ Set memory location to value
 - `POKE 216,*n*` — ONERR flag (*n* < 128 disables ONERR handler)
 - `POKE 230,*n*` — Hi-Res plotting page (32 = page 1, 64 = page 2)
 - `POKE 49168,0` or `POKE -16368,0` — clear keyboard strobe
-- `POKE 49200,0` or `POKE -16336,0` — toggle speaker (no-op)
+- `POKE 49200,0` or `POKE -16336,0` — toggle speaker output
 - `POKE 49232,0` or `POKE -16304,0` — graphics mode
 - `POKE 49233,0` or `POKE -16303,0` — text mode
 - `POKE 49234,0` or `POKE -16302,0` — full graphics mode
@@ -517,7 +518,7 @@ Direct output to slot
 ```
 IN# *aexpr*
 ```
-Direct output to slot
+Direct input from slot
 
 - `IN#0` — read input from keyboard or DOS
 - `IN#4` — read from Thunderclock
@@ -633,7 +634,8 @@ Parse string into number
 ```
 FRE( *aexpr* )
 ```
-Garbage collect strings (returns 0)
+Collect unused string storage and return free BASIC memory. Values above
+32767 are reported signed; add 65536 to a negative result.
 
 ```
 PDL( *aexpr* )
@@ -662,7 +664,7 @@ FN *name*( *expr* )
 ```
 Execute user defined function
 
-#### Function Compatibility Shims
+#### Hardware Reads
 
 ```
 PEEK( *aexpr* )
@@ -686,7 +688,7 @@ Value at memory location
 - `PEEK(49181)` or `PEEK(-16355)` — See if hires mode (> 127) or lores mode (< 128)
 - `PEEK(49182)` or `PEEK(-16354)` — See if mousetext mode (> 127)
 - `PEEK(49183)` or `PEEK(-16353)` — See if 80-column mode (> 127)
-- `PEEK(49200)` or `PEEK(-16336)` — Click Speaker (no-op)
+- `PEEK(49200)` or `PEEK(-16336)` — toggle speaker output
 - `PEEK(49248)` or `PEEK(-16288)` — Read Paddle Button #3
 - `PEEK(49249)` or `PEEK(-16287)` — Read Paddle Button #0
 - `PEEK(49250)` or `PEEK(-16286)` — Read Paddle Button #1
@@ -859,7 +861,7 @@ Division by zero
 Type mismatch
 
 176
-String too long — *Not generated*
+String too long
 
 191
 Formula too complex
@@ -953,17 +955,17 @@ Error codes can be determined by calling `PEEK(222)` in an ONERR handler.
 ```
 1
 ```
-Language not available — *Not generated*
+Language not available
 
 ```
 2
 ```
-Range error — *Not generated*
+Range error
 
 ```
 4
 ```
-Write protected — *Not generated*
+Write protected
 
 ```
 5
@@ -978,22 +980,22 @@ File not found
 ```
 7
 ```
-Volume mismatch — *Not generated*
+Volume mismatch
 
 ```
 8
 ```
-I/O error — *Not generated*
+I/O error
 
 ```
 9
 ```
-Disk full — *Not generated*
+Disk full
 
 ```
 10
 ```
-File locked — *Not generated*
+File locked
 
 ```
 11
@@ -1003,22 +1005,22 @@ Invalid option
 ```
 12
 ```
-No buffers available — *Not generated*
+No buffers available
 
 ```
 13
 ```
-File type mismatch — *Not generated*
+File type mismatch
 
 ```
 14
 ```
-Program too large — *Not generated*
+Program too large
 
 ```
 15
 ```
-Not direct command — *Not generated*
+Not direct command
 
 ### References
 
@@ -1027,3 +1029,11 @@ Not direct command — *Not generated*
 - [Beagle Bros. Peeks, Pokes & Pointers Chart (Colors, ASCII values, etc)](http://www.lazilong.com/apple_II/bbros/)
 - [More Beagle Bros. Posters — including Apple Commands Chart, in PDF format](http://beagle.applearchives.com/posters.htm)
 - [Applesoft Basic Programming Reference Manual](http://www.scribd.com/doc/232832/Applesoft-Basic-Programming-Reference-Manual)
+
+## Native ROM behavior source
+
+The GET, WAIT, SPEED=, and FRE descriptions target native AppleSoft, not a
+restricted JavaScript interpreter. See Apple Computer’s
+[Applesoft II BASIC Programming Reference Manual](https://www.duxburysystems.org/downloads/library/texas/apple/manuals/as2bprm.pdf).
+For speaker access and model-specific I/O, use the hardware reference and
+[Apple II Reference Manual](https://www.applelogic.org/files/AIIREDBOOK.pdf).

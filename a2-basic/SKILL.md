@@ -25,6 +25,8 @@ If the target machine is unclear, infer cautiously. Call out Apple II/II+, IIe, 
 
 Load only the reference needed for the task:
 
+- [references/development-recipes.md](references/development-recipes.md) for runnable source, build, disk-packaging, and emulator recipes
+
 - [references/applesoft.md](references/applesoft.md) for AppleSoft syntax, patterns, debugging defaults, and keyword behavior
 - [references/integerbasic.md](references/integerbasic.md) for Integer BASIC
 - [references/appledos.md](references/appledos.md) for DOS 3.3 details
@@ -34,7 +36,7 @@ Load only the reference needed for the task:
 ## Companion Routing
 
 - Use `a2-a2kit` when the BASIC program needs to be placed on, extracted from, or inspected inside a disk image.
-- Use `a2-apple2ts` when the user wants to run, mount, type, or debug the BASIC program in an emulator.
+- Use `a2-apple2ts` (configured MCP) or `a2-mame` (Lua console), honoring explicit emulator choice, when the user wants to run, mount, type, or debug the BASIC program in an emulator.
 - Use `a2-hardware` when model, ROM, keyboard, video, slot, memory, or peripheral assumptions drive the answer.
 
 ## AppleSoft Defaults

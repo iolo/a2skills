@@ -75,7 +75,7 @@ Where A is a letter, B is a letter or digit.
 
 - `ABS(x)` Absolute value of x
 - `SGN(x)` -1 if x<0, 0 if x=0, 1 if x>0
-- `RDN(x)` Random number in the range 0 <= r < x
+- `RND(x)` Random number in the range 0 <= r < x
 
 ## String Operations
 
@@ -124,3 +124,7 @@ Where A is a letter, B is a letter or digit.
 - `PRINT` x,y,... Prints strings or values
 - `TEXT` Sets text mode
 - `VTAB n` Sets vertical position to n
+
+## Source
+
+[Apple Computer, Apple II Reference Manual (January 1978)](https://www.applelogic.org/files/AIIREDBOOK.pdf), Integer BASIC functions.

@@ -1,6 +1,9 @@
-# apple2ts API
+# apple2ts HTTP API (compatibility)
 
-Use this reference when the user wants to control or inspect an `apple2ts` emulator over HTTP.
+Use this reference for an explicitly selected HTTP session. Prefer the configured
+MCP described in [apple2ts-mcp.md](apple2ts-mcp.md) for normal control. Never
+assume this HTTP server targets the private MCP session. This legacy endpoint
+summary must be checked against the selected server OpenAPI before use.
 
 ## Agent Navigation
 
@@ -17,6 +20,7 @@ Source of truth:
 
 ## Operating assumptions
 
+- The emulator is running in a browser with remote control and debug enabled (open `http://127.0.0.1:6502/?remoteControl=1&debug=on`)
 - The server is localhost-only.
 - Unless the user says otherwise, default base URL is `http://127.0.0.1:6502`.
 - The OpenAPI spec declares server URL `/`, so use the local host and port exposed by the running `apple2ts` instance.

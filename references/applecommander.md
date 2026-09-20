@@ -4,7 +4,7 @@ Use this reference when the task needs straightforward Apple II disk-image listi
 
 ## Agent Navigation
 
-- Prefer a bundled executable at `assets/ac` when present and executable.
+- Prefer an explicit executable, then a platform-compatible skill-local bundle, then `ac` on PATH. Root repository assets are not installed with this skill.
 - Prefer `a2kit.md` for general disk-image automation.
 - Use this file when the user asks for AppleCommander/`ac`, `a2kit` is unavailable, or the task is simple image listing, extraction, import, or creation.
 - Use `appledos.md` or `prodos.md` for BASIC-facing DOS/ProDOS command syntax.
@@ -94,3 +94,19 @@ ac -pt demo.dsk README < readme.txt
 - Determine whether the image is DOS 3.3, ProDOS, Pascal, or another layout before assuming filename rules or file types.
 - Prefer JSON listings when a later step will parse results.
 - After writes, recatalog the image and, if relevant, mount it in an emulator to confirm bootability or file visibility.
+
+## Verified BASIC round trip
+
+Work on a new writable copy of a bootable base image; leave its startup files
+intact. From the directory containing `hello.bas` and the copied `demo.dsk`:
+
+```sh
+ac -bas demo.dsk DEMOBAS < hello.bas
+ac -e demo.dsk DEMOBAS listing.bas
+ac -llj demo.dsk
+```
+
+Boot DOS and use `RUN DEMOBAS`. The repository tests compare this tokenized
+payload with a2kit's output. AppleCommander 13.0 was checked locally. For
+cc65 AppleSingle BIN import use `ac -as demo.dsk DEMOC < hello.as`; do not import
+its header as raw program bytes.

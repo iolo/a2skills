@@ -26,6 +26,8 @@ If the target machine is unclear, infer cautiously. State Apple II/II+, IIe, enh
 
 Load only the reference needed for the task:
 
+- [references/development-recipes.md](references/development-recipes.md) for runnable source, build, disk-packaging, and emulator recipes
+
 - [references/cc65.md](references/cc65.md) for `cc65`, `ca65`, `ld65`, and `cl65` build patterns
 - [references/6502.md](references/6502.md) for 6502 instruction behavior, addressing modes, and `ca65` patterns
 - [references/6502-opcodes.md](references/6502-opcodes.md) before inspecting [references/6502-opcodes.json](references/6502-opcodes.json) for exact opcode bytes or cycle counts
@@ -35,12 +37,12 @@ Load only the reference needed for the task:
 ## Companion Routing
 
 - Use `a2-a2kit` when a built program needs to be packaged into, extracted from, or verified inside a disk image.
-- Use `a2-apple2ts` when the user wants to run, mount, load, or debug the built program in an emulator.
+- Use `a2-apple2ts` (configured MCP) or `a2-mame` (Lua console), honoring explicit emulator choice, when the user wants to run, mount, load, or debug the built program in an emulator.
 - Use `a2-hardware` when model, ROM, slot, soft-switch, memory, display, or peripheral assumptions drive the answer.
 
 ## Defaults
 
-- Prefer `cl65 -t apple2` for simple one-file C or assembly programs.
+- Prefer `cl65 -t apple2` for C/runtime programs; use an explicit raw linker configuration for standalone assembly.
 - Use `ca65` plus `ld65` when custom segments, linker config, or object-level control matters.
 - Use labels instead of hard-coded branch offsets.
 - Separate zero-page, code, data, and string areas clearly.
@@ -66,11 +68,11 @@ Load only the reference needed for the task:
 
 ## Raw Binary Workflow
 
-When output is a raw Apple II binary from `cl65 -t apple2 -C apple2-asm.cfg` or equivalent:
-
-1. Prefer emulator `binary-block` mounting over debugger memory writes for normal loading.
-2. Use the produced binary name as `filename`.
-3. Use the known load address, commonly `$0803` / `2051` for `apple2-asm.cfg`.
-4. Use debugger memory writes only for precise inspection, patching, or when the mount path is insufficient.
+Determine the actual output format and entry/load addresses from the linker
+configuration, map, labels, and any file metadata. Standard `cl65 -t apple2`
+outputs AppleSingle; `apple2-asm.cfg` normally omits that header. Do not pass an
+AppleSingle file to a raw memory loader. Prefer a file upload with the correct
+address over ad hoc debugger writes. See the runnable recipes for a standalone
+$0800 fixture and OS-loaded C examples.
 
 When a program works in memory but not on screen, verify runtime state, game buffers, and screen memory separately before assuming rendering tells the whole story.
