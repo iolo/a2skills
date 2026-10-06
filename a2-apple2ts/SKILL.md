@@ -47,5 +47,6 @@ browser session.
   formats/addresses; `a2-a2kit` packages disk images.
 - `a2-mame` is an independent Lua-controlled alternative or comparison target.
   Honor explicit emulator choice; use separate sessions and media copies.
+- `a2-gssquared` controls native GSSquared Apple II/IIgs debug-socket sessions.
 - The local `APPLE2TS_REMOTE_CONTROL.md`, if present, is historical project
   evidence, not a universal policy or current MCP specification.

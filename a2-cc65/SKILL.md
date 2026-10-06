@@ -37,7 +37,7 @@ Load only the reference needed for the task:
 ## Companion Routing
 
 - Use `a2-a2kit` when a built program needs to be packaged into, extracted from, or verified inside a disk image.
-- Use `a2-apple2ts` (configured MCP) or `a2-mame` (Lua console), honoring explicit emulator choice, when the user wants to run, mount, load, or debug the built program in an emulator.
+- Use `a2-apple2ts` (configured MCP), `a2-mame` (Lua console), or `a2-gssquared` (native debug socket), honoring explicit emulator choice, when the user wants to run, mount, load, or debug the built program in an emulator.
 - Use `a2-hardware` when model, ROM, slot, soft-switch, memory, display, or peripheral assumptions drive the answer.
 
 ## Defaults

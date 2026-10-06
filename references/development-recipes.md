@@ -98,7 +98,8 @@ video state inconsistent with the fixture. Diagnose those before changing code.
 
 ## Emulator handoff
 
-Use `a2-apple2ts` for configured MCP sessions or `a2-mame` for Lua control.
+Use `a2-apple2ts` for configured MCP sessions, `a2-mame` for Lua control, or
+`a2-gssquared` for native Apple II/IIgs debug-socket control.
 Preserve explicit emulator choice. Upload `hello.bin` as raw at $0800, set PC,
 and stop at the linker label `done`; packaged runtime programs boot through DOS.
 Compare marker bytes and visible text. Keep independent sessions and disk copies

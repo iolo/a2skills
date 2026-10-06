@@ -36,7 +36,7 @@ Load only the reference needed for the task:
 ## Companion Routing
 
 - Use `a2-a2kit` when the BASIC program needs to be placed on, extracted from, or inspected inside a disk image.
-- Use `a2-apple2ts` (configured MCP) or `a2-mame` (Lua console), honoring explicit emulator choice, when the user wants to run, mount, type, or debug the BASIC program in an emulator.
+- Use `a2-apple2ts` (configured MCP), `a2-mame` (Lua console), or `a2-gssquared` (native debug socket), honoring explicit emulator choice, when the user wants to run, mount, type, or debug the BASIC program in an emulator.
 - Use `a2-hardware` when model, ROM, keyboard, video, slot, memory, or peripheral assumptions drive the answer.
 
 ## AppleSoft Defaults

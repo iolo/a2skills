@@ -31,6 +31,8 @@ profiles, Lua operations, and verification before controlling a session.
 - `a2-apple2ts` uses the configured Apple2TS MCP and is preferred when no
   emulator is selected and that MCP is available. MAME can run independently
   or alongside it; do not migrate a session silently.
+- `a2-gssquared` is a native Apple II/IIgs alternative using a debug socket and
+  the upstream Python client or a configured MCP sidecar.
 - `a2-basic` and `a2-cc65` write/build programs; `a2-a2kit` packages disk images.
 - Compare results on matched models, ROM environments, and media copies.
   Save states and debugger identifiers are emulator-specific.

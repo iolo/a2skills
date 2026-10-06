@@ -39,6 +39,7 @@ explicit base-image paths and work on copies.
 - `a2-applecommander`: AppleCommander-specific disk-image workflows when requested or when `a2kit` is unavailable
 - `a2-apple2ts`: configured `apple2ts-server` MCP sessions, uploads, input, screenshots, and debugging; HTTP compatibility guidance
 - `a2-mame`: MAME Apple II/IIe control through a persistent Lua console, reusable helpers, and optional runtime tests
+- `a2-gssquared`: native GSSquared Apple II/IIgs debug-socket control with the upstream Python client or a configured MCP sidecar
 - `a2-hardware`: Apple II family hardware, firmware, ROM, memory map, slots, and model differences
 
 ## Development recipes
@@ -49,10 +50,11 @@ explicit base-image paths and work on copies.
 | Package and verify a DOS/ProDOS disk | [a2kit skill](a2-a2kit/SKILL.md) |
 | Run/debug with configured Apple2TS MCP | [MCP reference](references/apple2ts-mcp.md) |
 | Run/debug with MAME Lua | [MAME reference](references/mame-lua.md) |
+| Run/debug with native GSSquared | [GSSquared reference](references/gssquared-control.md) |
 
 Honor an explicit emulator choice. Otherwise prefer configured Apple2TS MCP;
-MAME is an independent alternative or side-by-side comparison target. Match
-machine/ROM assumptions when comparing results. Neither emulator is required
+MAME and GSSquared are independent alternatives or side-by-side comparison targets.
+Match machine/ROM assumptions when comparing results. No emulator is required
 to build or package the examples.
 
 ## Verification
@@ -80,6 +82,18 @@ missing prerequisites, not passed. Add `--disk /absolute/disk.dsk` for a copied
 media mount/eject check. For Apple2TS, follow the
 [MCP integration scenarios](references/apple2ts-integration.md) using the
 configured MCP. Report PASS/FAIL/SKIP separately from offline checks.
+
+For native GSSquared with its upstream Python client and a working display:
+
+```sh
+python3 a2-gssquared/scripts/smoke.py --client-src /absolute/gssquared/clients/python/src --platform 3 --output-dir /tmp/new-gs2-iie-test
+python3 a2-gssquared/scripts/smoke.py --client-src /absolute/gssquared/clients/python/src --platform 5 --output-dir /tmp/new-gs2-gs-test
+```
+
+Use `--emulator /absolute/GSSquared` if it is not on PATH. Optional `--disk`
+tests mount/unmount on a copy. See the [GSSquared reference](references/gssquared-control.md)
+for prerequisites, media-discard behavior, and test coverage. These runtime tests
+are optional; CI does not launch emulators or download their assets.
 
 ## Later work
 
