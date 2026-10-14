@@ -35,6 +35,7 @@ explicit base-image paths and work on copies.
 
 - `a2-basic`: AppleSoft BASIC, Integer BASIC, BASIC debugging, DOS/ProDOS BASIC workflows, and PEEK/POKE/CALL usage
 - `a2-cc65`: Apple II native code with `cc65`, `ca65`, `cl65`, C, 6502 assembly, mixed C/assembly, raw binaries, firmware calls, and soft switches
+- `a2-disasm`: evidence-backed reverse engineering, loader and overlay analysis, mixed native/interpreted code, editable assets, gameplay mechanics, and reproducible disk reconstruction
 - `a2-a2kit`: default scriptable Apple II disk-image inspection, creation, conversion, extraction, and modification with `a2kit`
 - `a2-applecommander`: AppleCommander-specific disk-image workflows when requested or when `a2kit` is unavailable
 - `a2-apple2ts`: configured `apple2ts-server` MCP sessions, uploads, input, screenshots, and debugging; HTTP compatibility guidance
@@ -47,6 +48,7 @@ explicit base-image paths and work on copies.
 | Task | Start here |
 | --- | --- |
 | Build BASIC, C, standalone assembly, or mixed C/assembly | [Development recipes](references/development-recipes.md) |
+| Recover source, assets, or mechanics from an existing program | [Disassembly skill](a2-disasm/SKILL.md) |
 | Package and verify a DOS/ProDOS disk | [a2kit skill](a2-a2kit/SKILL.md) |
 | Run/debug with configured Apple2TS MCP | [MCP reference](references/apple2ts-mcp.md) |
 | Run/debug with MAME Lua | [MAME reference](references/mame-lua.md) |
