@@ -40,6 +40,10 @@ Useful commands:
 
 ## Common workflows
 
+The redirection examples below require a POSIX shell. For PowerShell and
+explicit Java CLI JAR invocation, use the binary subprocess pattern in
+[host platforms](host-platforms.md).
+
 List a disk:
 
 ```sh

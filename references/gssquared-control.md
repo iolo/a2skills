@@ -14,6 +14,10 @@ Otherwise use the upstream **`gs2debug`** Python client. Resolve installed
 PYTHONPATH=/absolute/gssquared/clients/python/src python3 your_controller.py
 ```
 
+PowerShell uses `$env:PYTHONPATH = 'C:\src\gssquared\clients\python\src'`
+followed by `py -3 your_controller.py`. The smoke script's `--client-src`
+argument avoids environment-variable syntax entirely.
+
 The Python package is not bundled with this skill. Prefer it to handwritten
 binary framing. There is one client connection per emulator and one outstanding
 request at a time. Disconnect an existing controller before switching clients;
@@ -46,6 +50,11 @@ observe actual guest execution before CPU setup. The bundled test waits for
 instruction trace entries. `no machine` can mean startup or System Select is
 pending. Do not remove another process's socket.
 
+The emulator's Windows socket support does not imply that the selected Python
+runtime exposes `socket.AF_UNIX`. The smoke script checks transport availability
+before launch and reports SKIP (77) if absent. Use a compatible client/runtime
+or configured MCP sidecar; see [host platforms](host-platforms.md).
+
 For iterative checks, launch one owned emulator in a persistent terminal or
 with `subprocess.Popen(..., start_new_session=True)`, retaining its handle,
 socket, log, and copied media. Reconnect successive controllers to that same
@@ -56,6 +65,10 @@ This avoids repeating native launch for every checker correction. In sandboxed
 hosts, GUI launch or socket access may require escalation. Request it for the
 specific launch/controller command when required; session reuse does not
 bypass permissions or require a broad arbitrary-Python approval rule.
+
+`start_new_session=True` is POSIX-specific. On Windows the smoke script uses
+`creationflags=subprocess.CREATE_NEW_PROCESS_GROUP`. Cleanup targets the
+owned process handle on both platforms.
 
 | `-p N` / status ID | Machine |
 | --- | --- |

@@ -1,12 +1,16 @@
 # Source to disk to emulator
 
+Examples marked `sh` use a POSIX shell. See [host platforms](host-platforms.md)
+for PowerShell equivalents and binary-safe subprocess I/O. Commands run from
+the named installed skill directory; substitute your own source/base paths.
+
 ## Native examples
 
 The installed `a2-cc65` skill contains `assets/examples/` and
 `scripts/build_examples.py`. From that skill directory:
 
 ```sh
-python3 scripts/build_examples.py --output-dir /tmp/a2-native
+python3 scripts/build_examples.py --output-dir ./build/a2-native
 ```
 
 The output directory must be new. Optional `--source-dir`, `--cl65`, `--ca65`,
@@ -65,12 +69,12 @@ Use a different new output directory for each call:
 
 ```sh
 python3 scripts/package_disk.py --source /absolute/hello.bas --format basic \
-  --base-image /absolute/dos33.dsk --output-dir /tmp/a2-basic-disk --name DEMOBAS
-python3 scripts/package_disk.py --source /tmp/a2-native/hello.as --format applesingle \
-  --base-image /absolute/prodos.po --output-dir /tmp/a2-c-disk --name DEMOC
-python3 scripts/package_disk.py --source /tmp/a2-native/hello.bin --format raw \
+  --base-image /absolute/dos33.dsk --output-dir ./build/a2-basic-disk --name DEMOBAS
+python3 scripts/package_disk.py --source /absolute/a2-native/hello.as --format applesingle \
+  --base-image /absolute/prodos.po --output-dir ./build/a2-c-disk --name DEMOC
+python3 scripts/package_disk.py --source /absolute/a2-native/hello.bin --format raw \
   --address 0x800 --base-image /absolute/dos33.dsk \
-  --output-dir /tmp/a2-raw-disk --name DEMORAW
+  --output-dir ./build/a2-raw-disk --name DEMORAW
 ```
 
 Repeat the C command with `mixed.as` / DEMOMIX. Each format supports either

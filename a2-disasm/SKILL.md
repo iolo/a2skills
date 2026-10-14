@@ -5,6 +5,9 @@ description: Reverse engineer Apple II programs and disk images into evidence-ba
 
 # A2 Disasm
 
+For Windows/macOS setup, shell syntax, and emulator limitations, read
+[references/host-platforms.md](references/host-platforms.md) when needed.
+
 Recover what the supplied program actually does, with a traceable path from
 disk bytes through runtime mappings to readable source and verified outputs.
 Scale the work to the request: a routine explanation does not require a whole

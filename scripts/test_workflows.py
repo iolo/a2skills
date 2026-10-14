@@ -2,6 +2,7 @@
 """Build and package real fixtures from isolated installed skill copies."""
 import hashlib
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -54,7 +55,7 @@ class Workflows(unittest.TestCase):
                 with self.subTest(disk=filename, format=fmt, source=source.name):
                     out = self.root / f'{filename}-{index}'
                     self.package(fmt, source, base, out, extra=extra)
-                    manifest = json.loads((out / 'manifest.json').read_text())
+                    manifest = json.loads((out / 'manifest.json').read_text(encoding='utf-8'))
                     payload = (out / 'payload.bin').read_bytes()
                     self.assertEqual(manifest['payload_sha256'], hashlib.sha256(payload).hexdigest())
                     if fmt == 'basic':
@@ -86,6 +87,26 @@ class Workflows(unittest.TestCase):
         self.package('applesingle', bad, base, self.root / 'bad-as', success=False)
         self.package('raw', self.native / 'hello.bin', base, self.root / 'overflow', extra=('--address', '65535'), success=False)
         self.package('raw', self.native / 'hello.bin', base, self.root / 'no-address', success=False)
+
+    def test_unicode_paths_and_crlf_basic(self):
+        directory = self.root / 'disk space café 한글'
+        directory.mkdir()
+        base = directory / 'boot disk.po'
+        shutil.copyfile(ROOT / 'assets/prodos-2.4.3.po', base)
+        source = directory / 'hello café.bas'
+        listing = (self.root / 'a2-basic/assets/examples/hello.bas').read_bytes()
+        source.write_bytes(listing.replace(b'\r\n', b'\n').replace(b'\n', b'\r\n'))
+        out = directory / 'packaged disk'
+        # Exercise redirected CLI output with an explicitly legacy encoding,
+        # even on Linux. The helper's path output must still be valid UTF-8.
+        result = subprocess.run(
+            [sys.executable, str(self.pack), '--source', str(source), '--format', 'basic',
+             '--base-image', str(base), '--output-dir', str(out), '--name', 'TESTPROG'],
+            env={**os.environ, 'PYTHONIOENCODING': 'cp1252'}, capture_output=True, timeout=60)
+        self.assertEqual(result.returncode, 0, result.stderr.decode(errors='replace'))
+        self.assertIn(str(out), result.stdout.decode('utf-8'))
+        expected = self.run_command('a2kit', 'tokenize', '-t', 'atxt', '-a', '2049', input=listing).stdout
+        self.assertEqual((out / 'payload.bin').read_bytes(), expected)
 
     @unittest.skipUnless(shutil.which('ac'), 'AppleCommander optional')
     def test_applecommander_basic_equivalent(self):

@@ -3,23 +3,61 @@ on: [push, pull_request]
 permissions:
   contents: read
 jobs:
+  packages:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-14, windows-2022]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Check installed skill layout
+        run: python scripts/check.py
+      - name: Check host portability without external tools
+        run: python scripts/test_portability.py
   offline:
-    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-14, windows-2022]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - uses: actions/checkout@v4
+        with:
+          repository: cc65/cc65
+          ref: a028ac4140127cfec5f546f6cfc151f25cbaaf98
+          path: build/cc65
+      - uses: msys2/setup-msys2@v2
+        if: runner.os == 'Windows'
+        with:
+          msystem: UCRT64
+          install: make mingw-w64-ucrt-x86_64-gcc
       - name: Build pinned cc65
+        if: runner.os != 'Windows'
         run: |
-          git clone https://github.com/cc65/cc65.git "$RUNNER_TEMP/cc65"
-          git -C "$RUNNER_TEMP/cc65" checkout a028ac4140127cfec5f546f6cfc151f25cbaaf98
-          make -C "$RUNNER_TEMP/cc65" -j2
-          echo "$RUNNER_TEMP/cc65/bin" >> "$GITHUB_PATH"
-          echo "CC65_HOME=$RUNNER_TEMP/cc65" >> "$GITHUB_ENV"
+          make -C build/cc65 -j2
+      - name: Build pinned native Windows cc65
+        if: runner.os == 'Windows'
+        shell: msys2 {0}
+        run: make -C build/cc65 -j2
+      - name: Configure native tool paths
+        shell: python
+        run: |
+          import os
+          from pathlib import Path
+          cc65 = Path('build/cc65').resolve()
+          with open(os.environ['GITHUB_PATH'], 'a', encoding='utf-8') as output:
+              output.write(str(cc65 / 'bin') + '\n')
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as output:
+              output.write('CC65_HOME=' + str(cc65) + '\n')
       - name: Install pinned a2kit
         run: cargo install a2kit --version 4.4.2 --locked
-      - name: Check installed skill layout
-        run: python3 scripts/check.py
       - name: Compile and round-trip disk fixtures
-        run: python3 scripts/test_workflows.py
+        run: python scripts/test_workflows.py

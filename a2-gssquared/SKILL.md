@@ -5,6 +5,9 @@ description: Control and debug native GSSquared Apple II and IIgs emulators thro
 
 # A2 GSSquared
 
+For Windows/macOS setup, shell syntax, and emulator limitations, read
+[references/host-platforms.md](references/host-platforms.md) when needed.
+
 Honor the selected emulator and machine. Use a configured GSSquared MCP sidecar
 when available; discover its actual tools and socket target. Otherwise use the
 upstream `gs2debug` Python client with the native `--debug PATH` socket. Read
@@ -17,7 +20,8 @@ read [references/gssquared-graphics.md](references/gssquared-graphics.md).
 
 1. Identify the executable, its assets, Python client, and requested platform.
    Prefer an explicit path, then PATH. Typical user installations put the binary
-   in `~/.local/bin/GSSquared` and assets in `~/.local/share/GSSquared`.
+   in `~/.local/bin/GSSquared` and assets in `~/.local/share/GSSquared` on Linux;
+   see the host reference for macOS bundles and Windows executables/client limits.
 2. Attach only to the selected socket, or launch an owned process with a unique
    socket path. Keep emulator and controller in separate process groups. Use
    copied writable disks and configs; preserve existing sessions.

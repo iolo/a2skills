@@ -37,7 +37,7 @@ def main():
         master, slave = pty.openpty()
         command = [sys.executable, str(scripts / 'launch.py'), '--mame', args.mame,
                    '--driver', args.driver, '--rompath', str(args.rompath.resolve()),
-                   '--output-dir', str(root / 'session'), '--headless', '--debug']
+                   '--output-dir', str(root / 'session'), '--headless', '--debugger', 'qt']
         if args.pluginspath:
             command += ['--pluginspath', str(args.pluginspath.resolve())]
         process = subprocess.Popen(command, stdin=slave, stdout=slave, stderr=slave,
@@ -72,7 +72,7 @@ def main():
             sequence += 1
             ident = str(sequence)
             pending = ''
-            encoded = ','.join(json.dumps(v) for v in values)
+            encoded = ','.join(json.dumps(v, ensure_ascii=False) for v in values)
             send(f'a2.call("{ident}","{operation}"' + (',' + encoded if encoded else '') + ')')
             result = []
 
@@ -99,7 +99,7 @@ def main():
 
         try:
             until(lambda: '[MAME]' in pending)
-            send('a2 = dofile(' + json.dumps(str(scripts / 'control.lua')) + ')')
+            send('a2 = dofile(' + json.dumps((scripts / 'control.lua').as_posix(), ensure_ascii=False) + ')')
             assert call('status')['driver'] == args.driver
             call('devices')
             call('pause')

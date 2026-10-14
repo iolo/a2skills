@@ -22,19 +22,27 @@ From the installed skill directory, start a persistent terminal:
 
 ```sh
 python3 scripts/launch.py --driver apple2 --rompath /absolute/roms \
-  --output-dir /tmp/new-mame-session --debug
+  --output-dir ./build/new-mame-session --debug
 ```
 
 Optional flags: `--mame /path/to/mame`, `--pluginspath /path/to/mame/plugins`,
-`--disk /path/to/demo.dsk`, `--headless`, `--script /path/to/startup.lua`.
+`--disk /path/to/demo.dsk`, `--headless`, `--script /path/to/startup.lua`,
+`--debugger qt` (or another backend provided by the installed build).
 The directory must be new. The launcher copies the disk, isolates writable
 configuration/state/screenshot paths, ignores existing machine config, and
 executes MAME without a shell. It never fetches ROMs. Headless uses SDL dummy
 drivers and no video/audio output; screenshots still use the emulated screen.
-`--debug` uses the Qt debugger backend. Visible sessions can open its debugger
-window; headless sessions set QT_QPA_PLATFORM=offscreen. The Qt backend must
-be compiled into MAME. Do not select the `none` backend: in 0.285 it resumes
+Visible `--debug` sessions use MAME's platform default debugger unless
+`--debugger` is supplied. Headless debugging defaults to Qt and sets
+QT_QPA_PLATFORM=offscreen. The Qt backend must be compiled into MAME for the
+full smoke test. Do not select the `none` backend: in 0.285 it resumes
 immediately at each stop, so Lua cannot reliably inspect a breakpoint.
+
+For PowerShell, use `py -3` and a single-line command with quoted paths.
+Plugin discovery covers adjacent plugins, common Homebrew prefixes, and Linux
+package paths; supply `--pluginspath` for other layouts. Native Windows launch
+keeps a waitable parent process. The full automated smoke test still requires
+a POSIX PTY and skips Windows. See [host platforms](host-platforms.md).
 
 Keep the returned terminal/process handle. Send Lua over that same terminal;
 this is local process control, not a network server or attachment to a random

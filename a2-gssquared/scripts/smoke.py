@@ -8,12 +8,32 @@ import argparse
 from collections import deque
 import importlib
 import json
+import os
 from pathlib import Path
 import shutil
+import socket
 import struct
 import subprocess
 import sys
 import time
+
+
+def process_group_options():
+    if os.name == 'nt':
+        return {'creationflags': subprocess.CREATE_NEW_PROCESS_GROUP}
+    return {'start_new_session': True}
+
+
+def socket_unavailable():
+    """Probe the transport required by the upstream Python client before launch."""
+    if not hasattr(socket, 'AF_UNIX'):
+        return 'this Python runtime has no AF_UNIX; use a compatible runtime/client or configured MCP sidecar'
+    try:
+        with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM):
+            pass
+    except OSError as error:
+        return f'AF_UNIX unavailable: {error}'
+    return None
 
 
 def main():
@@ -28,6 +48,11 @@ def main():
     parser.add_argument('--slot', type=int, default=6)
     parser.add_argument('--unit', type=int, default=0, help='0-based protocol unit')
     args = parser.parse_args()
+
+    unavailable = socket_unavailable()
+    if unavailable:
+        print('SKIP: ' + unavailable, file=sys.stderr)
+        return 77
 
     executable = shutil.which(args.emulator)
     if executable is None:
@@ -90,13 +115,13 @@ def main():
     bp = None
     checks = []
     result = 1
-    with (output / 'emulator.log').open('w') as log:
+    with (output / 'emulator.log').open('w', encoding='utf-8') as log:
         try:
             process = subprocess.Popen(
                 [str(Path(executable).absolute()), '--debug', str(socket_path),
                  '--no-quit-confirm', '-p', str(args.platform), '-s'],
                 cwd=output, stdout=log, stderr=subprocess.STDOUT,
-                start_new_session=True)
+                **process_group_options())
             deadline = time.monotonic() + 15.0
             while True:
                 if process.poll() is not None:
@@ -204,7 +229,7 @@ def main():
                     print('FAIL: emulator required forced cleanup', file=sys.stderr)
     report = dict(result='PASS' if result == 0 else 'FAIL', platform=args.platform,
                   checks=checks, log=str(output / 'emulator.log'))
-    (output / 'result.json').write_text(json.dumps(report, indent=2) + '\n')
+    (output / 'result.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(report))
     return result
 

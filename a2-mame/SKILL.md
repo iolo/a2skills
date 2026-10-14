@@ -5,6 +5,9 @@ description: Control and debug a MAME Apple II emulator remotely through its Lua
 
 # A2 MAME
 
+For Windows/macOS setup, shell syntax, and emulator limitations, read
+[references/host-platforms.md](references/host-platforms.md) when needed.
+
 Use an owned MAME process with a persistent terminal and `-console`. Read
 [references/mame-lua.md](references/mame-lua.md) for launch commands, model
 profiles, Lua operations, and verification before controlling a session.

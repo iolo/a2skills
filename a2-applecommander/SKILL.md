@@ -5,6 +5,9 @@ description: AppleCommander-specific Apple II disk-image skill. Use when the use
 
 # A2 AppleCommander
 
+For Windows/macOS setup, shell syntax, and emulator limitations, read
+[references/host-platforms.md](references/host-platforms.md) when needed.
+
 ## Overview
 
 Act as a practical Apple II disk-image operator using AppleCommander. Prefer `a2kit` for general disk-image automation; use AppleCommander when explicitly requested, when `a2kit` is unavailable, or when its conservative DOS 3.3/ProDOS operations are the simplest fit.

@@ -12,6 +12,29 @@ import sys
 import tempfile
 
 
+def resolve_tool(explicit=None):
+    """Use only a bundle matching the host OS/architecture, then search PATH."""
+    import platform
+    if explicit:
+        return shutil.which(explicit)
+    system = platform.system().lower()
+    machine = platform.machine().lower()
+    arch = {'amd64': 'x86_64', 'aarch64': 'arm64'}.get(machine, machine)
+    assets = Path(__file__).resolve().parents[1] / 'assets'
+    filename = 'a2kit.exe' if system == 'windows' else 'a2kit'
+    # New bundles can cover Intel Macs and ARM hosts without ambiguous names.
+    candidates = [assets / 'tools' / f'{system}-{arch}' / filename]
+    legacy = {('linux', 'x86_64'): 'a2kit', ('darwin', 'arm64'): 'a2kit-mac',
+              ('windows', 'x86_64'): 'a2kit.exe'}.get((system, arch))
+    if legacy:
+        candidates.append(assets / legacy)
+    for candidate in candidates:
+        found = shutil.which(str(candidate))
+        if found:
+            return found
+    return shutil.which('a2kit')
+
+
 def applesingle(data):
     if len(data) < 26 or struct.unpack_from('>II', data) != (0x00051600, 0x00020000):
         raise ValueError('expected an AppleSingle v2 file')
@@ -33,6 +56,9 @@ def applesingle(data):
 
 
 def main():
+    # Redirected stdout on Windows may otherwise use a legacy code page.
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source', type=Path, required=True)
     p.add_argument('--format', choices=('basic', 'raw', 'applesingle'), required=True)
@@ -46,12 +72,7 @@ def main():
         p.error('name must start with A–Z and contain only A–Z, 0–9, or dot (max 15)')
     if (args.format == 'raw') != (args.address is not None):
         p.error('--address is required only for raw input')
-    # Bundles use explicit platform names; do not execute an arbitrary foreign binary.
-    import platform
-    suffix = {('Linux', 'x86_64'): 'a2kit', ('Darwin', 'arm64'): 'a2kit-mac',
-              ('Windows', 'AMD64'): 'a2kit.exe'}.get((platform.system(), platform.machine()))
-    bundled = Path(__file__).resolve().parents[1] / 'assets' / (suffix or 'unavailable')
-    tool = shutil.which(args.a2kit) if args.a2kit else (shutil.which(str(bundled)) or shutil.which('a2kit'))
+    tool = resolve_tool(args.a2kit)
     if not tool:
         p.error('a2kit unavailable; supply --a2kit /path/to/a2kit')
     tool = str(Path(tool).resolve())
@@ -108,8 +129,8 @@ def main():
         catalog = run('catalog', '-d', disk).decode()
         if hashlib.sha256(base.read_bytes()).hexdigest() != before:
             raise ValueError('base image changed during packaging')
-        (out / 'catalog.txt').write_text(catalog)
-        (out / 'file-metadata.json').write_text(json.dumps(metadata, indent=2) + '\n')
+        (out / 'catalog.txt').write_text(catalog, encoding='utf-8')
+        (out / 'file-metadata.json').write_text(json.dumps(metadata, indent=2) + '\n', encoding='utf-8')
         (out / 'payload.bin').write_bytes(payload)
         if kind == 'atok':
             (out / 'listing.bas').write_bytes(run('detokenize', '-t', 'atok', data=extracted))
@@ -117,7 +138,7 @@ def main():
                   'address': address, 'bytes': len(payload), 'filesystem': stat['fs_name'],
                   'base_sha256': before, 'payload_sha256': hashlib.sha256(payload).hexdigest()}
         shutil.move(str(disk), out / disk.name)
-        (out / 'manifest.json').write_text(json.dumps(result, indent=2) + '\n')
+        (out / 'manifest.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
     print(out / 'manifest.json')
 
 

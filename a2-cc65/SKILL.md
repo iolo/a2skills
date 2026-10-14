@@ -5,6 +5,9 @@ description: Write, build, analyze, or debug Apple II native programs with the c
 
 # A2 cc65
 
+For Windows/macOS setup, shell syntax, and emulator limitations, read
+[references/host-platforms.md](references/host-platforms.md) when needed.
+
 ## Overview
 
 Act as a practical Apple II native-code developer using the `cc65` toolchain: `cc65`, `ca65`, `ld65`, and `cl65`. Prefer concrete outputs: C source, `ca65` source, `cl65` build commands, linker notes, memory maps, debugger checks, and concise explanations of instruction or hardware behavior.

@@ -1,1 +1,739 @@
-../../references/a2-peek-poke-call.json
+[
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "33",
+    "int16": 33,
+    "uint16": 33,
+    "hex": "$0021",
+    "type": "PEEK/POKE",
+    "usage": "Text window width; POKE 33,33 compresses listing format."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "34",
+    "int16": 34,
+    "uint16": 34,
+    "hex": "$0022",
+    "type": "PEEK/POKE",
+    "usage": "Text window top margin."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "35",
+    "int16": 35,
+    "uint16": 35,
+    "hex": "$0023",
+    "type": "PEEK/POKE",
+    "usage": "Text window bottom margin."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "36",
+    "int16": 36,
+    "uint16": 36,
+    "hex": "$0024",
+    "type": "PEEK/POKE",
+    "usage": "Cursor X; also used as a printer-tab hack in the list."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "37",
+    "int16": 37,
+    "uint16": 37,
+    "hex": "$0025",
+    "type": "PEEK",
+    "usage": "Cursor Y."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "43",
+    "int16": 43,
+    "uint16": 43,
+    "hex": "$002B",
+    "type": "PEEK",
+    "usage": "Boot slot times 16."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "44",
+    "int16": 44,
+    "uint16": 44,
+    "hex": "$002C",
+    "type": "PEEK",
+    "usage": "End point of last HLIN, VLIN, or PLOT."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "48",
+    "int16": 48,
+    "uint16": 48,
+    "hex": "$0030",
+    "type": "PEEK",
+    "usage": "Lo-res color value times 17."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "50",
+    "int16": 50,
+    "uint16": 50,
+    "hex": "$0032",
+    "type": "PEEK/POKE",
+    "usage": "Text output format: inverse, flash, normal; some values hide or scramble output."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "51",
+    "int16": 51,
+    "uint16": 51,
+    "hex": "$0033",
+    "type": "PEEK/POKE",
+    "usage": "Prompt character."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "74-77",
+    "int16_range": [74, 77],
+    "uint16_range": [74, 77],
+    "hex_range": ["$004A", "$004D"],
+    "type": "PEEK",
+    "usage": "Integer BASIC LOMEM/HIMEM pointers."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "82",
+    "int16": 82,
+    "uint16": 82,
+    "hex": "$0052",
+    "type": "POKE",
+    "usage": "Cassette autorun flag."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "103-131",
+    "int16_range": [103, 131],
+    "uint16_range": [103, 131],
+    "hex_range": ["$0067", "$0083"],
+    "type": "PEEK",
+    "usage": "Applesoft program start, variables, arrays, strings, current line, DATA pointers, and last variable info."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "175-176",
+    "int16_range": [175, 176],
+    "uint16_range": [175, 176],
+    "hex_range": ["$00AF", "$00B0"],
+    "type": "PEEK",
+    "usage": "Applesoft end-of-program address."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "202-205",
+    "int16_range": [202, 205],
+    "uint16_range": [202, 205],
+    "hex_range": ["$00CA", "$00CD"],
+    "type": "PEEK",
+    "usage": "Integer BASIC program and variable-storage pointers."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "214",
+    "int16": 214,
+    "uint16": 214,
+    "hex": "$00D6",
+    "type": "PEEK/POKE",
+    "usage": "Applesoft RUN flag / autorun behavior."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "216",
+    "int16": 216,
+    "uint16": 216,
+    "hex": "$00D8",
+    "type": "PEEK/POKE",
+    "usage": "ONERR active flag."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "218-222",
+    "int16_range": [218, 222],
+    "uint16_range": [218, 222],
+    "hex_range": ["$00DA", "$00DE"],
+    "type": "PEEK",
+    "usage": "ONERR line and error code."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "224-234",
+    "int16_range": [224, 234],
+    "uint16_range": [224, 234],
+    "hex_range": ["$00E0", "$00EA"],
+    "type": "PEEK",
+    "usage": "Last HGR point, HGR color, HGR page, scale, shape-table address, and collision counter."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "241",
+    "int16": 241,
+    "uint16": 241,
+    "hex": "$00F1",
+    "type": "PEEK",
+    "usage": "256-SPEED."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "243",
+    "int16": 243,
+    "uint16": 243,
+    "hex": "$00F3",
+    "type": "PEEK",
+    "usage": "Flash mask."
+  },
+  {
+    "section": "Low RAM / BASIC Variables",
+    "address_expr": "249",
+    "int16": 249,
+    "uint16": 249,
+    "hex": "$00F9",
+    "type": "PEEK",
+    "usage": "Rotation value."
+  },
+  {
+    "section": "Vectors and Hooks",
+    "address_expr": "976-978",
+    "int16_range": [976, 978],
+    "uint16_range": [976, 978],
+    "hex_range": ["$03D0", "$03D2"],
+    "type": "PEEK",
+    "usage": "DOS re-entry vector / DOS location hint."
+  },
+  {
+    "section": "Vectors and Hooks",
+    "address_expr": "1010-1012",
+    "int16_range": [1010, 1012],
+    "uint16_range": [1010, 1012],
+    "hex_range": ["$03F2", "$03F4"],
+    "type": "PEEK/POKE",
+    "usage": "RESET vector; common reboot and RUN hacks."
+  },
+  {
+    "section": "Vectors and Hooks",
+    "address_expr": "1013-1015",
+    "int16_range": [1013, 1015],
+    "uint16_range": [1013, 1015],
+    "hex_range": ["$03F5", "$03F7"],
+    "type": "PEEK/POKE",
+    "usage": "Ampersand (&) vector."
+  },
+  {
+    "section": "Vectors and Hooks",
+    "address_expr": "1016-1018",
+    "int16_range": [1016, 1018],
+    "uint16_range": [1016, 1018],
+    "hex_range": ["$03F8", "$03FA"],
+    "type": "PEEK",
+    "usage": "Control-Y vector."
+  },
+  {
+    "section": "Vectors and Hooks",
+    "address_expr": "1912+slot",
+    "hex": "$0778+slot",
+    "type": "POKE",
+    "usage": "Apple parallel-card linefeed behavior."
+  },
+  {
+    "section": "Vectors and Hooks",
+    "address_expr": "2049",
+    "int16": 2049,
+    "uint16": 2049,
+    "hex": "$0801",
+    "type": "POKE",
+    "usage": "First BASIC line; listed as a listing trick."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "40514",
+    "int16": -25022,
+    "uint16": 40514,
+    "hex": "$9E42",
+    "type": "POKE",
+    "usage": "Greeting program file-type tweak."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "40993",
+    "int16": -24543,
+    "uint16": 40993,
+    "hex": "$A021",
+    "type": "POKE",
+    "usage": "Allow some disk commands in direct mode."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "42319",
+    "int16": -23217,
+    "uint16": 42319,
+    "hex": "$A54F",
+    "type": "POKE",
+    "usage": "Disable INIT."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "42350",
+    "int16": -23186,
+    "uint16": 42350,
+    "hex": "$A56E",
+    "type": "CALL",
+    "usage": "Catalog disk."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "42768",
+    "int16": -22768,
+    "uint16": 42768,
+    "hex": "$A710",
+    "type": "POKE",
+    "usage": "Suppress DOS error messages."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "43140-43379",
+    "int16_range": [-22396, -22157],
+    "uint16_range": [43140, 43379],
+    "hex_range": ["$A884", "$A973"],
+    "type": "PEEK",
+    "usage": "DOS command table."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "43378-43582",
+    "int16_range": [-22158, -21954],
+    "uint16_range": [43378, 43582],
+    "hex_range": ["$A972", "$AA3E"],
+    "type": "PEEK",
+    "usage": "DOS error-message table."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "43607",
+    "int16": -21929,
+    "uint16": 43607,
+    "hex": "$AA57",
+    "type": "PEEK",
+    "usage": "MAXFILES value."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "43616-43617",
+    "int16_range": [-21920, -21919],
+    "uint16_range": [43616, 43617],
+    "hex_range": ["$AA60", "$AA61"],
+    "type": "PEEK",
+    "usage": "Last BLOAD length.",
+    "notes": "The thread appears to mistype one address as 46617."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "43624",
+    "int16": -21912,
+    "uint16": 43624,
+    "hex": "$AA68",
+    "type": "PEEK/POKE",
+    "usage": "Drive number / drive select."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "43626",
+    "int16": -21910,
+    "uint16": 43626,
+    "hex": "$AA6A",
+    "type": "PEEK",
+    "usage": "Slot number."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "43634-43635",
+    "int16_range": [-21902, -21901],
+    "uint16_range": [43634, 43635],
+    "hex_range": ["$AA72", "$AA73"],
+    "type": "PEEK",
+    "usage": "Last BLOAD starting address."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "43697",
+    "int16": -21839,
+    "uint16": 43697,
+    "hex": "$AAB1",
+    "type": "PEEK",
+    "usage": "Default MAXFILES value."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "43698",
+    "int16": -21838,
+    "uint16": 43698,
+    "hex": "$AAB2",
+    "type": "PEEK",
+    "usage": "DOS command character."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "43702",
+    "int16": -21834,
+    "uint16": 43702,
+    "hex": "$AAB6",
+    "type": "PEEK",
+    "usage": "BASIC flag: Integer / FP ROM / FP RAM."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "44033",
+    "int16": -21503,
+    "uint16": 44033,
+    "hex": "$AC01",
+    "type": "PEEK",
+    "usage": "Catalog track number."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "44505",
+    "int16": -21031,
+    "uint16": 44505,
+    "hex": "$ADD9",
+    "type": "POKE",
+    "usage": "Reveal deleted files in catalog."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "44513",
+    "int16": -21023,
+    "uint16": 44513,
+    "hex": "$ADE1",
+    "type": "POKE",
+    "usage": "Show only locked files in catalog."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "44567",
+    "int16": -20969,
+    "uint16": 44567,
+    "hex": "$AE17",
+    "type": "PEEK",
+    "usage": "Filename-length formatting value used by catalog."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "44578-44596",
+    "int16_range": [-20958, -20940],
+    "uint16_range": [44578, 44596],
+    "hex_range": ["$AE22", "$AE34"],
+    "type": "POKE",
+    "usage": "Catalog carriage-return and full-screen pause suppression hacks."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "44599",
+    "int16": -20937,
+    "uint16": 44599,
+    "hex": "$AE37",
+    "type": "POKE",
+    "usage": "Stop catalog at each file and wait for keypress."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "44605",
+    "int16": -20931,
+    "uint16": 44605,
+    "hex": "$AE3D",
+    "type": "POKE",
+    "usage": "Number of files shown before catalog pause."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "44611",
+    "int16": -20925,
+    "uint16": 44611,
+    "hex": "$AE43",
+    "type": "PEEK",
+    "usage": "Number of digits used for sector and volume formatting."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "45991-45998",
+    "int16_range": [-19545, -19538],
+    "uint16_range": [45991, 45998],
+    "hex_range": ["$B3A7", "$B3AE"],
+    "type": "PEEK",
+    "usage": "File-type code table."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "45999-46010",
+    "int16_range": [-19537, -19526],
+    "uint16_range": [45999, 46010],
+    "hex_range": ["$B3AF", "$B3BA"],
+    "type": "PEEK",
+    "usage": "Disk volume heading."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "46017",
+    "int16": -19519,
+    "uint16": 46017,
+    "hex": "$B3C1",
+    "type": "PEEK",
+    "usage": "Disk volume number."
+  },
+  {
+    "section": "DOS 3.3 Area",
+    "address_expr": "46064",
+    "int16": -19472,
+    "uint16": 46064,
+    "hex": "$B3F0",
+    "type": "PEEK",
+    "usage": "Sectors per track: 13 for DOS 3.2, 16 for DOS 3.3."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49107",
+    "int16": -16429,
+    "uint16": 49107,
+    "hex": "$BFD3",
+    "type": "POKE",
+    "usage": "Prevent language-card load during reboot."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49152",
+    "int16": -16384,
+    "uint16": 49152,
+    "hex": "$C000",
+    "type": "PEEK",
+    "usage": "Read keyboard latch."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49168",
+    "int16": -16368,
+    "uint16": 49168,
+    "hex": "$C010",
+    "type": "SOFTSWITCH",
+    "usage": "Clear keyboard strobe on access."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49200",
+    "int16": -16336,
+    "uint16": 49200,
+    "hex": "$C030",
+    "type": "SOFTSWITCH",
+    "usage": "Speaker click / toggle on access."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49232",
+    "int16": -16304,
+    "uint16": 49232,
+    "hex": "$C050",
+    "type": "SOFTSWITCH",
+    "usage": "Graphics on softswitch."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49233",
+    "int16": -16303,
+    "uint16": 49233,
+    "hex": "$C051",
+    "type": "SOFTSWITCH",
+    "usage": "Text on softswitch."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49234",
+    "int16": -16302,
+    "uint16": 49234,
+    "hex": "$C052",
+    "type": "SOFTSWITCH",
+    "usage": "Full graphics softswitch."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49235",
+    "int16": -16301,
+    "uint16": 49235,
+    "hex": "$C053",
+    "type": "SOFTSWITCH",
+    "usage": "Mixed text/graphics softswitch."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49236",
+    "int16": -16300,
+    "uint16": 49236,
+    "hex": "$C054",
+    "type": "SOFTSWITCH",
+    "usage": "Page 1 softswitch."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49237",
+    "int16": -16299,
+    "uint16": 49237,
+    "hex": "$C055",
+    "type": "SOFTSWITCH",
+    "usage": "Page 2 softswitch."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49238",
+    "int16": -16298,
+    "uint16": 49238,
+    "hex": "$C056",
+    "type": "SOFTSWITCH",
+    "usage": "Lo-res softswitch."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49239",
+    "int16": -16297,
+    "uint16": 49239,
+    "hex": "$C057",
+    "type": "SOFTSWITCH",
+    "usage": "Hi-res softswitch."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49248",
+    "int16": -16288,
+    "uint16": 49248,
+    "hex": "$C060",
+    "type": "PEEK",
+    "usage": "Cassette input."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49250-49255",
+    "int16_range": [-16286, -16281],
+    "uint16_range": [49250, 49255],
+    "hex_range": ["$C062", "$C067"],
+    "type": "PEEK",
+    "usage": "Paddle buttons and analog paddles."
+  },
+  {
+    "section": "ROM Softswitches and I/O",
+    "address_expr": "49408-50944",
+    "int16_range": [-16128, -14592],
+    "uint16_range": [49408, 50944],
+    "hex_range": ["$C100", "$C700"],
+    "type": "PEEK",
+    "usage": "Slot ROM / slot I/O space reads."
+  },
+  {
+    "section": "Common CALL Entry Points",
+    "address_expr": "64166",
+    "int16": -1370,
+    "uint16": 64166,
+    "hex": "$FAA6",
+    "type": "CALL",
+    "usage": "Cold start / boot."
+  },
+  {
+    "section": "Common CALL Entry Points",
+    "address_expr": "64246",
+    "int16": -1290,
+    "uint16": 64246,
+    "hex": "$FAF6",
+    "type": "CALL",
+    "usage": "Undocumented in the thread."
+  },
+  {
+    "section": "Common CALL Entry Points",
+    "address_expr": "64367",
+    "int16": -1169,
+    "uint16": 64367,
+    "hex": "$FB6F",
+    "type": "CALL",
+    "usage": "Reset-vector helper noted in the thread."
+  },
+  {
+    "section": "Common CALL Entry Points",
+    "address_expr": "64899",
+    "int16": -637,
+    "uint16": 64899,
+    "hex": "$FD83",
+    "type": "PEEK",
+    "usage": "Crude machine-ID byte used by the list."
+  },
+  {
+    "section": "Common CALL Entry Points",
+    "address_expr": "65068",
+    "int16": -468,
+    "uint16": 65068,
+    "hex": "$FE2C",
+    "type": "CALL",
+    "usage": "Memory move helper after setup in low RAM."
+  },
+  {
+    "section": "Common CALL Entry Points",
+    "address_expr": "65121",
+    "int16": -415,
+    "uint16": 65121,
+    "hex": "$FE61",
+    "type": "CALL",
+    "usage": "Disassemble 20 instructions."
+  },
+  {
+    "section": "Common CALL Entry Points",
+    "address_expr": "65152",
+    "int16": -384,
+    "uint16": 65152,
+    "hex": "$FE80",
+    "type": "CALL",
+    "usage": "Inverse video."
+  },
+  {
+    "section": "Common CALL Entry Points",
+    "address_expr": "65156",
+    "int16": -380,
+    "uint16": 65156,
+    "hex": "$FE84",
+    "type": "CALL",
+    "usage": "Normal video."
+  },
+  {
+    "section": "Common CALL Entry Points",
+    "address_expr": "65369",
+    "int16": -167,
+    "uint16": 65369,
+    "hex": "$FF59",
+    "type": "CALL",
+    "usage": "Enter monitor and reset."
+  },
+  {
+    "section": "Common CALL Entry Points",
+    "address_expr": "65381",
+    "int16": -155,
+    "uint16": 65381,
+    "hex": "$FF65",
+    "type": "CALL",
+    "usage": "Enter monitor and ring bell."
+  },
+  {
+    "section": "Common CALL Entry Points",
+    "address_expr": "65385",
+    "int16": -151,
+    "uint16": 65385,
+    "hex": "$FF69",
+    "type": "CALL",
+    "usage": "Enter monitor normally."
+  },
+  {
+    "section": "Common CALL Entry Points",
+    "address_expr": "65392",
+    "int16": -144,
+    "uint16": 65392,
+    "hex": "$FF70",
+    "type": "CALL",
+    "usage": "Scan input buffer."
+  }
+]

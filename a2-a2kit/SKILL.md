@@ -5,6 +5,9 @@ description: Default Apple II disk-image skill. Inspect, create, convert, extrac
 
 # A2 A2Kit
 
+For Windows/macOS setup, shell syntax, and emulator limitations, read
+[references/host-platforms.md](references/host-platforms.md) when needed.
+
 ## Overview
 
 Act as a practical Apple II disk-image operator using `a2kit`. Prefer `a2kit` for disk-image work unless the user explicitly asks for AppleCommander or `a2kit` is unavailable. Prefer scriptable, verifiable commands and inspect images before editing them.

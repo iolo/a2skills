@@ -9,6 +9,8 @@ import sys
 
 
 def main():
+    if hasattr(sys.stdout, 'reconfigure'):
+        sys.stdout.reconfigure(encoding='utf-8')
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source-dir', type=Path, default=Path(__file__).resolve().parents[1] / 'assets/examples')
     p.add_argument('--output-dir', type=Path, required=True, help='new directory; must not exist')
@@ -45,7 +47,7 @@ def main():
                       'expected_memory': {'0x0300': 66, '0x0400': 193},
                       'requires': '6502, main-memory 40-column Apple II text'},
     }
-    (out / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+    (out / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n', encoding='utf-8')
     print(out / 'manifest.json')
 
 

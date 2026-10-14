@@ -4,13 +4,20 @@ Apple II agent skills split by task area.
 
 ## Install
 
-Install all focused skills from GitHub with Vercel's skills CLI:
+With Node.js/npm installed, install all focused skills from GitHub with
+Vercel's skills CLI (macOS/Linux):
 
 ```sh
 npx skills add https://github.com/iolo/a2skills --full-depth --skill '*'
 ```
 
-To preview available skills without installing:
+Windows PowerShell (use the `.cmd` launcher):
+
+```powershell
+npx.cmd skills add https://github.com/iolo/a2skills --full-depth --skill '*'
+```
+
+To preview available skills without installing (use `npx.cmd` on Windows):
 
 ```sh
 npx skills add https://github.com/iolo/a2skills --full-depth --list
@@ -24,12 +31,37 @@ npx skills add https://github.com/iolo/a2skills --full-depth --skill a2-basic a2
 
 Each focused skill is self-contained and includes its relevant reference files.
 
-In this repository, each skill's `references/` files are symlinks to the canonical files in the root `references/` directory. The skills CLI dereferences those symlinks when copying skills, so installed skills get regular files.
+Each skill's `references/` contains regular files, so Windows clones and ZIP
+downloads do not need symlink privileges. The canonical sources live in root
+`references/`. After editing those sources, run
+`python scripts/sync_references.py --write`; CI rejects stale copies.
+To include a new reference in a skill, copy it into that skill's `references/`
+directory and link it from `SKILL.md`. The sync script matches files by name.
 
 The root `assets/` directory contains optional local tools and base disk images;
 it is not included when a focused skill is installed. Resolve tools from an
 explicit path, a compatible skill-local bundle, then PATH. Recipes accept
 explicit base-image paths and work on copies.
+
+## Windows and macOS setup
+
+See [host platform setup](references/host-platforms.md) for tool prerequisites,
+PowerShell examples, Intel/Apple Silicon tool selection, binary I/O, and
+emulator limitations. Python helpers require Python 3.10 or newer. Use
+`python3` on macOS/Linux, or `py -3` on Windows (`python` also works when it
+selects the intended Python 3 installation). Install cc65 and a2kit separately
+for build/disk workflows; a configured emulator is optional.
+
+| Workflow | Linux | macOS | Native Windows |
+| --- | --- | --- | --- |
+| Skill package checks | CI configured | CI configured | CI configured; no symlinks needed |
+| cc65/a2kit build and disk round trips | CI configured | CI configured | CI configured with native tools |
+| Apple2TS MCP | Requires configured server/uploader | Requires configured server/uploader | Requires configured server/uploader |
+| MAME full smoke test | POSIX PTY + Qt build + ROMs | POSIX PTY + Qt build + ROMs | SKIP; manual Lua/startup-script control remains available |
+| GSSquared smoke test | Requires client/socket/display/assets | Requires client/socket/display/assets | Requires AF_UNIX-capable Python/client/display/assets; otherwise SKIP |
+
+The CI matrix is a verification mechanism, not a claim that every host or
+emulator build has passed. Emulator runtime checks remain opt-in.
 
 ## Skills
 
@@ -63,12 +95,21 @@ to build or package the examples.
 
 ```sh
 python3 scripts/check.py
+python3 scripts/test_portability.py
 python3 scripts/test_workflows.py
 ```
 
-The first check uses Python 3 only and checks materialized installed skills.
-The second requires cc65 and a2kit, builds native fixtures, round-trips BASIC,
-and packages all four fixtures on DOS/ProDOS copies. AppleCommander verification
+Windows PowerShell:
+
+```powershell
+py -3 scripts/check.py
+py -3 scripts/test_portability.py
+py -3 scripts/test_workflows.py
+```
+
+The first two checks use Python 3 only and check installed skills and host
+portability behavior. The third requires cc65 and a2kit, builds native fixtures,
+round-trips BASIC, and packages all four fixtures on DOS/ProDOS copies. AppleCommander verification
 is optional. CI pins cc65/a2kit; no emulator or ROM downloads are performed.
 
 Optional emulator checks:
@@ -79,7 +120,8 @@ python3 a2-mame/scripts/smoke.py --rompath /absolute/roms --driver apple2e
 ```
 
 MAME checks require a POSIX terminal and a build with console/json plugins and
-Qt debugger support (offscreen for headless tests). Exit 77 means skipped for
+Qt debugger support (offscreen for headless tests). The launcher allows a
+different debugger backend for visible sessions. Exit 77 means skipped for
 missing prerequisites, not passed. Add `--disk /absolute/disk.dsk` for a copied
 media mount/eject check. For Apple2TS, follow the
 [MCP integration scenarios](references/apple2ts-integration.md) using the
@@ -88,8 +130,8 @@ configured MCP. Report PASS/FAIL/SKIP separately from offline checks.
 For native GSSquared with its upstream Python client and a working display:
 
 ```sh
-python3 a2-gssquared/scripts/smoke.py --client-src /absolute/gssquared/clients/python/src --platform 3 --output-dir /tmp/new-gs2-iie-test
-python3 a2-gssquared/scripts/smoke.py --client-src /absolute/gssquared/clients/python/src --platform 5 --output-dir /tmp/new-gs2-gs-test
+python3 a2-gssquared/scripts/smoke.py --client-src /absolute/gssquared/clients/python/src --platform 3 --output-dir ./build/gs2-iie-test
+python3 a2-gssquared/scripts/smoke.py --client-src /absolute/gssquared/clients/python/src --platform 5 --output-dir ./build/gs2-gs-test
 ```
 
 Use `--emulator /absolute/GSSquared` if it is not on PATH. Optional `--disk`

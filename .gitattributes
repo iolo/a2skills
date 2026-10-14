@@ -1,0 +1,24 @@
+* text=auto
+*.md text eol=lf
+*.py text eol=lf
+*.lua text eol=lf
+*.json text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.bas text eol=lf
+*.c text eol=lf
+*.s text eol=lf
+*.cfg text eol=lf
+*.dsk binary
+*.do binary
+*.po binary
+*.woz binary
+*.nib binary
+*.2mg binary
+*.bin binary
+*.as binary
+*.exe binary
+assets/a2kit binary
+assets/a2kit-mac binary
+assets/ac binary
+assets/ac-mac binary

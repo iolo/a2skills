@@ -5,6 +5,9 @@ description: Write, analyze, debug, or explain Apple II BASIC programs, especial
 
 # A2 BASIC
 
+For Windows/macOS setup, shell syntax, and emulator limitations, read
+[references/host-platforms.md](references/host-platforms.md) when needed.
+
 ## Overview
 
 Act as a practical Apple II BASIC developer. Prefer concrete outputs: readable BASIC listings, corrected line-numbered code, concise debugging notes, or disk/emulator workflow steps when requested.

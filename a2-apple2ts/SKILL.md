@@ -5,6 +5,9 @@ description: Control and debug Apple2TS using the configured apple2ts-server MCP
 
 # A2 Apple2TS
 
+For Windows/macOS setup, shell syntax, and emulator limitations, read
+[references/host-platforms.md](references/host-platforms.md) when needed.
+
 Prefer the already configured `apple2ts-server` MCP. Discover actual tools and
 resources; client prefixes may differ. Do not reinstall or reconfigure the server
 as part of ordinary emulator work.

@@ -59,6 +59,10 @@ Useful installed commands from `a2kit --help`:
 
 ## Common workflows
 
+Redirection and pipeline examples below use a POSIX shell. For PowerShell,
+use the package helper or binary subprocess pattern in
+[host platforms](host-platforms.md).
+
 Catalog an image:
 
 ```sh
