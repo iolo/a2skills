@@ -1,5 +1,10 @@
 # MAME Apple II Lua control
 
+The console remains useful for interactive work. For file transport without
+stdin, machine/controller profiles, and session artifacts, read
+[mailbox sessions](mame-mailbox.md). For adapter-driven repeated decisions and
+precise input, read [automation](mame-automation.md).
+
 ## Prerequisites and launch
 
 Baseline: MAME 0.285, Python 3, MAME console/json plugins, and locally supplied
@@ -30,7 +35,7 @@ Optional flags: `--mame /path/to/mame`, `--pluginspath /path/to/mame/plugins`,
 `--debugger qt` (or another backend provided by the installed build).
 The directory must be new. The launcher copies the disk, isolates writable
 configuration/state/screenshot paths, ignores existing machine config, and
-executes MAME without a shell. It never fetches ROMs. Headless uses SDL dummy
+supervises MAME without a shell and records session/exit manifests. It never fetches ROMs. Headless uses SDL dummy
 drivers and no video/audio output; screenshots still use the emulated screen.
 Visible `--debug` sessions use MAME's platform default debugger unless
 `--debugger` is supplied. Headless debugging defaults to Qt and sets
@@ -40,8 +45,7 @@ immediately at each stop, so Lua cannot reliably inspect a breakpoint.
 
 For PowerShell, use `py -3` and a single-line command with quoted paths.
 Plugin discovery covers adjacent plugins, common Homebrew prefixes, and Linux
-package paths; supply `--pluginspath` for other layouts. Native Windows launch
-keeps a waitable parent process. The full automated smoke test still requires
+package paths; supply `--pluginspath` for other layouts. The launcher keeps a waitable parent process on every host. The full automated smoke test still requires
 a POSIX PTY and skips Windows. See [host platforms](host-platforms.md).
 
 Keep the returned terminal/process handle. Send Lua over that same terminal;
@@ -83,7 +87,10 @@ pause or debugger stop.
 | `breakpoint(address,cpuTag)` | Return owned breakpoint id; requires --debug |
 | `clear_breakpoint(id,cpuTag)` | Remove that breakpoint only |
 | `go(cpuTag)`, `step(cpuTag)` | Debugger run/one-instruction step; observe resulting stop |
-| `exit()` | Schedule owned session shutdown |
+| `keyboard_status()` | Queue empty/posting flags and emulated time; not proof of consumption |
+| `automation_status()`, `stop_automation(reason)` | Inspect or stop the owned Lua controller |
+| `capture(prefix,address,length,mapping,screenTag)` | PNG, mapped bytes, metadata; see automation reference |
+| `exit()` | Stop automation and schedule owned session shutdown |
 
 CPU defaults to `:maincpu` after validating its program space; inspect devices
 before using it for another configuration. MAME's SP includes stack page one:

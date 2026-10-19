@@ -18,6 +18,8 @@ jobs:
         run: python scripts/check.py
       - name: Check host portability without external tools
         run: python scripts/test_portability.py
+      - name: Check MAME mailbox failure and profile contracts
+        run: python scripts/test_mame.py
   offline:
     strategy:
       fail-fast: false

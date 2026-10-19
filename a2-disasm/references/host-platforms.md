@@ -93,10 +93,14 @@ scratch directory and record their original paths and hashes.
   share executable paths, localhost behavior, or emulator sockets.
 - **MAME:** supply `--pluginspath` when discovery fails. Visible launches use
   MAME's default debugger with `--debug`; `--debugger` selects a backend
-  explicitly. The full smoke test still requires a POSIX PTY and a Qt-enabled
+  explicitly. The console smoke test still requires a POSIX PTY and a Qt-enabled
   build; native Windows reports SKIP (77). Manual Lua/startup-script use is
   separate from that smoke test. macOS also needs a compatible Qt build for
-  the full smoke test; being POSIX is not sufficient.
+  the console smoke test; being POSIX is not sufficient. The mailbox transport
+  uses ordinary files and a host-periodic plugin callback, with a separate no-PTY
+  smoke test. Linux MAME 0.285 is validated; Windows/macOS mailbox runtime behavior
+  still needs local verification. On Windows place sessions under a private ACL;
+  POSIX mode 0700 alone does not establish Windows privacy.
 - **GSSquared:** macOS bundles may use
   `GSSquared.app/Contents/MacOS/GSSquared`; Windows uses `GSSquared.exe`.
   Keep bundled assets with the application. The upstream Python client needs

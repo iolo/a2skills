@@ -57,7 +57,8 @@ for build/disk workflows; a configured emulator is optional.
 | Skill package checks | CI configured | CI configured | CI configured; no symlinks needed |
 | cc65/a2kit build and disk round trips | CI configured | CI configured | CI configured with native tools |
 | Apple2TS MCP | Requires configured server/uploader | Requires configured server/uploader | Requires configured server/uploader |
-| MAME full smoke test | POSIX PTY + Qt build + ROMs | POSIX PTY + Qt build + ROMs | SKIP; manual Lua/startup-script control remains available |
+| MAME console smoke test | POSIX PTY + Qt build + ROMs | POSIX PTY + Qt build + ROMs | SKIP; manual Lua/startup-script control remains available |
+| MAME mailbox smoke test | No PTY; MAME 0.285 + Qt + ROMs validated | Runtime verification pending | Runtime verification pending |
 | GSSquared smoke test | Requires client/socket/display/assets | Requires client/socket/display/assets | Requires AF_UNIX-capable Python/client/display/assets; otherwise SKIP |
 
 The CI matrix is a verification mechanism, not a claim that every host or
@@ -71,7 +72,7 @@ emulator build has passed. Emulator runtime checks remain opt-in.
 - `a2-a2kit`: default scriptable Apple II disk-image inspection, creation, conversion, extraction, and modification with `a2kit`
 - `a2-applecommander`: AppleCommander-specific disk-image workflows when requested or when `a2kit` is unavailable
 - `a2-apple2ts`: configured `apple2ts-server` MCP sessions, uploads, input, screenshots, and debugging; HTTP compatibility guidance
-- `a2-mame`: MAME Apple II/IIe control through a persistent Lua console, reusable helpers, and optional runtime tests
+- `a2-mame`: MAME Apple II/IIe control through a Lua console or local mailbox, bounded Lua automation, and copied floppy/CFFA media profiles
 - `a2-gssquared`: native GSSquared Apple II/IIgs debug-socket control with the upstream Python client or a configured MCP sidecar
 - `a2-hardware`: Apple II family hardware, firmware, ROM, memory map, slots, and model differences
 
@@ -84,6 +85,7 @@ emulator build has passed. Emulator runtime checks remain opt-in.
 | Package and verify a DOS/ProDOS disk | [a2kit skill](a2-a2kit/SKILL.md) |
 | Run/debug with configured Apple2TS MCP | [MCP reference](references/apple2ts-mcp.md) |
 | Run/debug with MAME Lua | [MAME reference](references/mame-lua.md) |
+| Automate MAME without stdin | [Mailbox and profiles](references/mame-mailbox.md), [Lua automation](references/mame-automation.md) |
 | Run/debug with native GSSquared | [GSSquared reference](references/gssquared-control.md) |
 
 Honor an explicit emulator choice. Otherwise prefer configured Apple2TS MCP;
@@ -96,6 +98,7 @@ to build or package the examples.
 ```sh
 python3 scripts/check.py
 python3 scripts/test_portability.py
+python3 scripts/test_mame.py
 python3 scripts/test_workflows.py
 ```
 
@@ -104,11 +107,12 @@ Windows PowerShell:
 ```powershell
 py -3 scripts/check.py
 py -3 scripts/test_portability.py
+py -3 scripts/test_mame.py
 py -3 scripts/test_workflows.py
 ```
 
-The first two checks use Python 3 only and check installed skills and host
-portability behavior. The third requires cc65 and a2kit, builds native fixtures,
+The first three checks use Python 3 only and check installed skills, host
+portability, and mailbox failure/profile contracts. The fourth requires cc65 and a2kit, builds native fixtures,
 round-trips BASIC, and packages all four fixtures on DOS/ProDOS copies. AppleCommander verification
 is optional. CI pins cc65/a2kit; no emulator or ROM downloads are performed.
 
@@ -117,10 +121,11 @@ Optional emulator checks:
 ```sh
 python3 a2-mame/scripts/smoke.py --rompath /absolute/roms --driver apple2
 python3 a2-mame/scripts/smoke.py --rompath /absolute/roms --driver apple2e
+python3 a2-mame/scripts/smoke_mailbox.py --rompath /absolute/roms --output-dir ./build/new-mailbox-test
 ```
 
-MAME checks require a POSIX terminal and a build with console/json plugins and
-Qt debugger support (offscreen for headless tests). The launcher allows a
+The console smoke needs a POSIX terminal; the mailbox smoke does not use stdin.
+Both need console/json plugins, ROMs, and Qt debugger support for headless tests. The launcher allows a
 different debugger backend for visible sessions. Exit 77 means skipped for
 missing prerequisites, not passed. Add `--disk /absolute/disk.dsk` for a copied
 media mount/eject check. For Apple2TS, follow the

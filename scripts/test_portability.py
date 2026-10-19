@@ -131,6 +131,7 @@ class Emulators(unittest.TestCase):
                     out = root / ('session-' + str(len(list(root.glob('session-*')))))
                     fake_process = Mock()
                     fake_process.wait.return_value = 23
+                    fake_process.pid = 12345
                     fake_os = SimpleNamespace(name='nt', environ={}, chdir=Mock())
                     argv = ['launch.py', '--rompath', str(root), '--output-dir', str(out), *extra]
                     with patch.object(sys, 'argv', argv), \

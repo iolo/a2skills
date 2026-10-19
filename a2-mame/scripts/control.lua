@@ -1,5 +1,5 @@
 -- MAME Lua console helpers. Resolve machine/device objects for every operation:
--- resets can invalidate previously retained objects. No background transport.
+-- resets can invalidate previously retained objects. Shared by both transports.
 local a2 = {}
 local json = require('json')
 local function machine() return manager.machine end
@@ -138,7 +138,54 @@ function a2.step(tag)
     emu.unpause(); debug_cpu(tag):step(1)
     return {scheduled='step'}
 end
-function a2.exit() machine():exit(); return {scheduled='exit'} end
+function a2.automation_status()
+    local r = a2_automation and a2_automation.current
+    return {active=r and r.active or false, phase=r and r.phase_name or nil, result=r and r.result or nil}
+end
+function a2.stop_automation(reason)
+    return a2_automation and a2_automation.stop(reason) or {active=false}
+end
+function a2.exit()
+    a2.stop_automation('session exit requested')
+    machine():exit(); return {scheduled='exit'}
+end
+function a2.keyboard_status()
+    local k = machine().natkeyboard
+    return {empty=k.empty, is_posting=k.is_posting, time=machine().time:as_double()}
+end
+-- Explicit mapping description comes from the program adapter. No inferred HGR bank.
+function a2.capture(prefix, address, length, mapping, screen_tag)
+    stable()
+    integer(length, 1, 16384)
+    assert(type(mapping) == 'table' and mapping.mode and mapping.bank and mapping.page,
+           'adapter mapping requires mode, bank, page and relevant soft-switch values')
+    assert(address >= 0 and address + length <= 0xC000, 'capture must avoid mapped I/O')
+    local bytes = {}
+    for offset=0,length-1,4096 do
+        local part = a2.read(address+offset, math.min(4096,length-offset)).bytes
+        for _, value in ipairs(part) do bytes[#bytes+1] = string.char(value) end
+    end
+    local f = assert(io.open(prefix .. '.bin', 'wb'))
+    assert(f:write(table.concat(bytes))); assert(f:close())
+    a2.screenshot(prefix .. '.png', screen_tag)
+    local result = {address=address, length=length, mapping=mapping, status=a2.status(),
+                    registers=a2.registers(), pixels_may_lag=true,
+                    raw=prefix .. '.bin', png=prefix .. '.png'}
+    f = assert(io.open(prefix .. '.json', 'wb'))
+    assert(f:write(json.stringify(result), '\n')); assert(f:close())
+    return result
+end
+-- Host requests cannot race an active autonomous controller. Native --lua is
+-- intentionally unrestricted; callers must obey the same single-owner contract.
+for _, name in ipairs({'pause', 'resume', 'reset', 'set_register', 'write', 'load_binary',
+                        'keys', 'mount', 'eject', 'save', 'restore', 'breakpoint',
+                        'clear_breakpoint', 'go', 'step'}) do
+    local fn = a2[name]
+    a2[name] = function(...)
+        assert(not a2_automation or not a2_automation.busy(), 'stop_automation before independent control')
+        return fn(...)
+    end
+end
 function a2.call(id, operation, ...)
     assert(type(id) == 'string' and #id <= 64, 'provide a short command id')
     local fn = a2[operation]
